@@ -93,13 +93,13 @@ const TicketList = ({ tickets, checkAll, check0, check1, check2, check3, tabChea
           id: el.id,
           price: convertPrice(el.price),
           ticketToData: {
-            toAndFrom: `${el.segments[0].origin} - ${el.segments[0].destination}`,
+            toAndFrom: `${el.segments[0].origin} — ${el.segments[0].destination}`,
             date: el.segments[0].date,
             timeToFly: el.segments[0].duration,
             transfers: el.segments[0].stops,
           },
           ticketFromData: {
-            toAndFrom: `${el.segments[1].origin} - ${el.segments[1].destination}`,
+            toAndFrom: `${el.segments[1].origin} — ${el.segments[1].destination}`,
             date: el.segments[0].date,
             timeToFly: el.segments[1].duration,
             transfers: el.segments[1].stops,
