@@ -1,14 +1,20 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 
 import { connect } from 'react-redux';
 
 import { PropTypes } from 'prop-types';
 
+import { Alert } from 'antd';
+
+import { nothingFound } from '../../constants';
+
 import ticketListStyle from './TicketList.module.scss';
 
 import Ticket from '../Ticket/Ticket';
 
 const TicketList = ({ tickets, checkAll, check0, check1, check2, check3, tabCheap, ticketsToShow }) => {
+  // эта функция визуально преобразовывает цену, чтобы она имела пробел в себе
   const convertPrice = (price) => {
     let newPrice = price.toString();
 
@@ -29,7 +35,8 @@ const TicketList = ({ tickets, checkAll, check0, check1, check2, check3, tabChea
     return price;
   };
 
-  const createTickets = () => {
+  // эта функция создаёт список билетов и сортируе их как по значениям табов, так и по значениям чекбоксов
+  const createTickets = (toShow) => {
     if (tabCheap) {
       tickets.sort((sortVal1, sortVal2) => sortVal1.price - sortVal2.price);
     }
@@ -43,75 +50,90 @@ const TicketList = ({ tickets, checkAll, check0, check1, check2, check3, tabChea
       );
     }
 
-    return tickets.map((el) => {
-      const ticketInfo = {
-        carier: el.carrier,
-        id: el.id,
-        price: convertPrice(el.price),
-        ticketToData: {
-          toAndFrom: `${el.segments[0].origin} - ${el.segments[0].destination}`,
-          date: el.segments[0].date,
-          timeToFly: el.segments[0].duration,
-          transfers: el.segments[0].stops,
-        },
-        ticketFromData: {
-          toAndFrom: `${el.segments[1].origin} - ${el.segments[1].destination}`,
-          date: el.segments[0].date,
-          timeToFly: el.segments[1].duration,
-          transfers: el.segments[1].stops,
-        },
-      };
+    let filteredTickets = tickets.filter((el) => {
+      const zeroStops = check0 ? 0 : undefined;
+      const oneStop = check1 ? 1 : undefined;
+      const twoStops = check2 ? 2 : undefined;
+      const threeStops = check3 ? 3 : undefined;
 
-      const ticket = (
-        <li className={ticketListStyle['ticket-list__item']} key={ticketInfo.id}>
-          <Ticket
-            carrier={ticketInfo.carier}
-            ticketToData={ticketInfo.ticketToData}
-            ticketFromData={ticketInfo.ticketFromData}
-            price={ticketInfo.price}
-          />
+      const arrOfChecks = [checkAll, zeroStops, oneStop, twoStops, threeStops];
+
+      // тут я отключил правило линта, которое запрещало переписывать параметр acc. Мне это нужно, чтобы вернуть булевый тип данных
+      const filterResult = arrOfChecks.reduce((acc, elemOfchecks) => {
+        if (elemOfchecks === true && acc === false) {
+          acc = elemOfchecks;
+          return acc;
+        }
+        if (elemOfchecks === 0 && acc === false) {
+          acc = el.segments[0].stops.length === elemOfchecks && el.segments[1].stops.length === elemOfchecks;
+          return acc;
+        }
+        if (elemOfchecks === 1 && acc === false) {
+          acc = el.segments[0].stops.length === elemOfchecks && el.segments[1].stops.length === elemOfchecks;
+          return acc;
+        }
+        if (elemOfchecks === 2 && acc === false) {
+          acc = el.segments[0].stops.length === elemOfchecks && el.segments[1].stops.length === elemOfchecks;
+          return acc;
+        }
+        if (elemOfchecks === 3 && acc === false) {
+          acc = el.segments[0].stops.length === elemOfchecks && el.segments[1].stops.length === elemOfchecks;
+          return acc;
+        }
+        return acc;
+      }, false);
+
+      return filterResult;
+    });
+
+    filteredTickets = filteredTickets
+      .map((el) => {
+        const ticketInfo = {
+          carier: el.carrier,
+          id: el.id,
+          price: convertPrice(el.price),
+          ticketToData: {
+            toAndFrom: `${el.segments[0].origin} - ${el.segments[0].destination}`,
+            date: el.segments[0].date,
+            timeToFly: el.segments[0].duration,
+            transfers: el.segments[0].stops,
+          },
+          ticketFromData: {
+            toAndFrom: `${el.segments[1].origin} - ${el.segments[1].destination}`,
+            date: el.segments[0].date,
+            timeToFly: el.segments[1].duration,
+            transfers: el.segments[1].stops,
+          },
+        };
+
+        const ticket = (
+          <li className={ticketListStyle['ticket-list__item']} key={ticketInfo.id}>
+            <Ticket
+              carrier={ticketInfo.carier}
+              ticketToData={ticketInfo.ticketToData}
+              ticketFromData={ticketInfo.ticketFromData}
+              price={ticketInfo.price}
+            />
+          </li>
+        );
+        return ticket;
+      })
+      // этот слайс отвечает за количество показываемых билетов
+      .slice(0, toShow);
+
+    if (filteredTickets.length === 0) {
+      return (
+        <li>
+          <Alert className={ticketListStyle.infoNotif} message={nothingFound} type="info" showIcon />
         </li>
       );
-
-      if (checkAll) {
-        return ticket;
-      }
-
-      if (
-        check0 &&
-        ticketInfo.ticketToData.transfers.length === 0 &&
-        ticketInfo.ticketFromData.transfers.length === 0
-      ) {
-        return ticket;
-      }
-      if (
-        check1 &&
-        ticketInfo.ticketToData.transfers.length === 1 &&
-        ticketInfo.ticketFromData.transfers.length === 1
-      ) {
-        return ticket;
-      }
-      if (
-        check2 &&
-        ticketInfo.ticketToData.transfers.length === 2 &&
-        ticketInfo.ticketFromData.transfers.length === 2
-      ) {
-        return ticket;
-      }
-      if (
-        check3 &&
-        ticketInfo.ticketToData.transfers.length === 3 &&
-        ticketInfo.ticketFromData.transfers.length === 3
-      ) {
-        return ticket;
-      }
-      return null;
-    });
+    }
+    return filteredTickets;
   };
 
   return (
     <ul className={ticketListStyle['ticket-list']} type="none">
-      {createTickets().splice(0, ticketsToShow)}
+      {createTickets(ticketsToShow)}
     </ul>
   );
 };

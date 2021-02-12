@@ -4,4 +4,6 @@ const ticketsErrorConst = 'Произошла ошибка при запросе
 
 const moreTicketsErrConst = 'Это все билеты, что удалось получить до ошибки';
 
-export { idErrorConst, ticketsErrorConst, moreTicketsErrConst };
+const nothingFound = 'Рейсов, подходящих под заданные фильтры, не найдено';
+
+export { idErrorConst, ticketsErrorConst, moreTicketsErrConst, nothingFound };

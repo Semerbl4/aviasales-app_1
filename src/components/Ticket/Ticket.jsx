@@ -32,7 +32,7 @@ const Ticket = ({ ticketToData, ticketFromData, price, carrier }) => {
     return 'Пересадки';
   };
 
-  // Время посадки и прилета - 07:28 - 03:00
+  // Возвращает время посадки и время прилёта
   const calculateArivalTime = (from, to) => {
     const hoursFrom = new Date(from).getHours();
     const minutesFrom = new Date(from).getMinutes();
