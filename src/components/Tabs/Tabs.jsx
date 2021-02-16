@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import cn from 'classnames';
 
-import * as actions from '../../actions';
+import * as actions from '../../redux/actions';
 
 import tabsStyle from './Tabs.module.scss';
 

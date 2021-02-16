@@ -12,7 +12,7 @@ import { idErrorConst, ticketsErrorConst, moreTicketsErrConst } from '../../cons
 
 import appStyle from './App.module.scss';
 
-import * as actions from '../../actions';
+import * as actions from '../../redux/actions';
 
 import Tabs from '../Tabs/Tabs';
 import TicketList from '../TicketList/TicketList';

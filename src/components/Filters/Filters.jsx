@@ -7,7 +7,7 @@ import cn from 'classnames';
 
 import filtersStyle from './Filters.module.scss';
 
-import * as actions from '../../actions';
+import * as actions from '../../redux/actions';
 
 // eslint-disable-next-line no-shadow
 const Filters = ({ checkAll, check0, check1, check2, check3, all, none, one, two, three }) => {

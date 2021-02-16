@@ -7,7 +7,7 @@ import reduxThunk from 'redux-thunk';
 
 import { Provider } from 'react-redux';
 
-import reducer from './reducer';
+import reducer from './redux/reducer';
 
 import App from './components/App/App';
 
