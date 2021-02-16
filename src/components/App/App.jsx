@@ -30,6 +30,7 @@ const App = ({
   moreTicketsError,
   searchIdError,
   ticketsError,
+  checkBoxes,
 }) => {
   useEffect(() => {
     getSearchId().then((res) => {
@@ -38,6 +39,8 @@ const App = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const isAnyBoxActive = () => Object.values(checkBoxes).includes(true);
 
   return (
     <div className={appStyle.container}>
@@ -59,7 +62,9 @@ const App = ({
                 ПОКАЗАТЬ ЕЩЁ
               </button>
             )}
-            {moreTicketsError && <Alert message={moreTicketsErrConst} type="warning" showIcon closable />}
+            {moreTicketsError && isAnyBoxActive() && (
+              <Alert message={moreTicketsErrConst} type="warning" showIcon closable />
+            )}
           </section>
         </main>
       )}
@@ -76,14 +81,16 @@ App.propTypes = {
   moreTicketsError: PropTypes.bool.isRequired,
   searchIdError: PropTypes.bool.isRequired,
   ticketsError: PropTypes.bool.isRequired,
+  checkBoxes: PropTypes.objectOf(PropTypes.bool).isRequired,
 };
 
 const mapStatesToProps = (state) => ({
-  moreTicketsToLoad: state.moreTicketsToLoad,
-  moreTicketsError: state.moreTicketsError,
-  searchIdError: state.searchIdError,
-  ticketsError: state.ticketsError,
-  tickets: state.tickets,
+  moreTicketsToLoad: state.mainReducer.moreTicketsToLoad,
+  moreTicketsError: state.errorsReducer.moreTicketsError,
+  searchIdError: state.errorsReducer.searchIdError,
+  ticketsError: state.errorsReducer.ticketsError,
+  tickets: state.mainReducer.tickets,
+  checkBoxes: state.filter,
 });
 
 const mapDispatchToProps = (dispatch) => {

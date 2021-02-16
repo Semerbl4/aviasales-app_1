@@ -40,7 +40,7 @@ Tabs.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  tabCheap: state.tabCheap,
+  tabCheap: state.mainReducer.tabCheap,
 });
 
 export default connect(mapStateToProps, actions)(Tabs);

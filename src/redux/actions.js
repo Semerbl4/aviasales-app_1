@@ -1,32 +1,49 @@
 import { nanoid } from 'nanoid';
 
-export const all = () => ({ type: 'ALL' });
+import {
+  allType,
+  noneType,
+  oneType,
+  twoType,
+  threeType,
+  cheapType,
+  notCheapType,
+  showMoreTicketsType,
+  setRestTicketsErrorType,
+  setSearchIdErrorType,
+  setTicketsErrorType,
+  setTicketsType,
+  setSearchIdType,
+  setRestTicketsType,
+} from './actionTypes';
 
-export const none = () => ({ type: 'NONE' });
+export const all = () => ({ type: allType });
 
-export const one = () => ({ type: 'ONE' });
+export const none = () => ({ type: noneType });
 
-export const two = () => ({ type: 'TWO' });
+export const one = () => ({ type: oneType });
 
-export const three = () => ({ type: 'THREE' });
+export const two = () => ({ type: twoType });
 
-export const cheap = () => ({ type: 'CHEAP' });
+export const three = () => ({ type: threeType });
 
-export const notCheap = () => ({ type: 'NOT_CHEAP' });
+export const cheap = () => ({ type: cheapType });
 
-export const showMoreTickets = () => ({ type: 'SHOW_MORE_TICKETS' });
+export const notCheap = () => ({ type: notCheapType });
 
-export const setRestTicketsError = () => ({ type: 'GET_REST_TICKETS_ERROR' });
+export const showMoreTickets = () => ({ type: showMoreTicketsType });
 
-export const setSearchIdError = () => ({ type: 'SET_SEARCH_ID_ERROR' });
+export const setRestTicketsError = () => ({ type: setRestTicketsErrorType });
 
-export const setTicketsError = () => ({ type: 'SET_TICKETS_ERROR' });
+export const setSearchIdError = () => ({ type: setSearchIdErrorType });
 
-export const setSearchId = (payload) => ({ type: 'SEARCH_ID', payload });
+export const setTicketsError = () => ({ type: setTicketsErrorType });
 
-export const setTickets = (payload) => ({ type: 'TICKETS', payload });
+export const setSearchId = (payload) => ({ type: setSearchIdType, payload });
 
-export const setRestTickets = (payload) => ({ type: 'REST_TICKETS', payload });
+export const setTickets = (payload) => ({ type: setTicketsType, payload });
+
+export const setRestTickets = (payload) => ({ type: setRestTicketsType, payload });
 
 // eslint-disable-next-line consistent-return
 export const getSearchId = () => async (dispatch) => {

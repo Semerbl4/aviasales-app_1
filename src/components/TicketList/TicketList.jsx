@@ -51,10 +51,10 @@ const TicketList = ({ tickets, checkAll, check0, check1, check2, check3, tabChea
     }
 
     let filteredTickets = tickets.filter((el) => {
-      const zeroStops = check0 ? 0 : undefined;
-      const oneStop = check1 ? 1 : undefined;
-      const twoStops = check2 ? 2 : undefined;
-      const threeStops = check3 ? 3 : undefined;
+      const zeroStops = check0 ? 0 : null;
+      const oneStop = check1 ? 1 : null;
+      const twoStops = check2 ? 2 : null;
+      const threeStops = check3 ? 3 : null;
 
       const arrOfChecks = [checkAll, zeroStops, oneStop, twoStops, threeStops];
 
@@ -151,14 +151,14 @@ TicketList.propTypes = {
 };
 
 const mapStatesToProps = (state) => ({
-  tickets: state.tickets,
+  tickets: state.mainReducer.tickets,
   checkAll: state.filter.checkAll,
   check0: state.filter.check0,
   check1: state.filter.check1,
   check2: state.filter.check2,
   check3: state.filter.check3,
-  tabCheap: state.tabCheap,
-  ticketsToShow: state.ticketsToShow,
+  tabCheap: state.mainReducer.tabCheap,
+  ticketsToShow: state.mainReducer.ticketsToShow,
 });
 
 export default connect(mapStatesToProps)(TicketList);
